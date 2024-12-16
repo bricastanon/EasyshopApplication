@@ -12,7 +12,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -62,41 +61,60 @@ public class CategoriesController {
     }
 
     // add the appropriate annotation for a get action
-    public Category getById(@PathVariable int id)
-    {
+    @GetMapping("/{id}")
+    public Category getById(@PathVariable int id) {
         // get the category by id
-        return null;
+        Category category = categoryDao.getById(id);
+        if (category == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
+        }
+        return category;
     }
 
     // the url to return all products in category 1 would look like this
     // https://localhost:8080/categories/1/products
     @GetMapping("{categoryId}/products")
-    public List<Product> getProductsById(@PathVariable int categoryId)
-    {
+    public List<Product> getProductsById(@PathVariable int categoryId) {
         // get a list of product by categoryId
-        return null;
+        List<Product> products = productDao.listByCategoryId(categoryId);
+        if (products == null || products.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No products found for this category");
+        }
+        return products;
     }
 
     // add annotation to call this method for a POST action
     // add annotation to ensure that only an ADMIN can call this function
-    public Category addCategory(@RequestBody Category category)
-    {
-        // insert the category
-        return null;
+    @PostMapping("")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Category addCategory(@RequestBody Category category) {
+        // Use the DAO to create the category
+        category = categoryDao.create(category);
+        return category;
     }
 
-    // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
+        // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function
-    public void updateCategory(@PathVariable int id, @RequestBody Category category)
-    {
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void updateCategory(@PathVariable int id, @Valid @RequestBody Category category) {
         // update the category by id
+        if (categoryDao.getById(id) == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
+        }
+        categoryDao.update(id, category);
     }
 
 
     // add annotation to call this method for a DELETE action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function
-    public void deleteCategory(@PathVariable int id)
-    {
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteCategory(@PathVariable int id) {
         // delete the category by id
-    }
+            if (categoryDao.getById(id) == null) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
+            }
+            categoryDao.delete(id);
+        }
 }
