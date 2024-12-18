@@ -47,12 +47,9 @@ public class ShoppingCart
     }
 
     public BigDecimal getTotal() {
-        BigDecimal total = items.values()
-                                .stream()
-                                .map(i -> i.getLineTotal())
-                                .reduce( BigDecimal.ZERO, (lineTotal, subTotal) -> subTotal.add(lineTotal));
-
-        return total;
+        return items.values()
+                .stream()
+                .map(ShoppingCartItem::getLineTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
-
 }

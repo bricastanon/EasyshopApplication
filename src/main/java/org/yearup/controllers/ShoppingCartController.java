@@ -40,7 +40,7 @@ public class ShoppingCartController
             int userId = user.getId();
 
             // use the shoppingcartDao to get all items in the cart and return the cart
-            return shoppingCartDao.getCartByUserId(userId);
+            return shoppingCartDao.getByUserId(userId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
@@ -49,14 +49,14 @@ public class ShoppingCartController
     // https://localhost:8080/cart/products/15 (15 is the productId to be added
     @PostMapping("/products/{productId}")
     public void addProductToCart(@PathVariable int productId, Principal principal) {
-    try {
-        String userName = principal.getName();
-        User user = userDao.getByUserName(userName);
-        int userId = user.getId();
-        // Use the shoppingCartDao to add the product to the cart
-        shoppingCartDao.addProductToCart(userId, productId);
-    } catch (Exception e) {
-        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        try {
+            String userName = principal.getName();
+            User user = userDao.getByUserName(userName);
+            int userId = user.getId();
+            // Use the shoppingCartDao to add the product to the cart
+            shoppingCartDao.addProductToCart(userId, productId);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
 
@@ -85,7 +85,7 @@ public class ShoppingCartController
             User user = userDao.getByUserName(userName);
             int userId = user.getId();
             // Clear all products from the cart
-             shoppingCartDao.clearCart(userId);
+            shoppingCartDao.clearCart(userId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
