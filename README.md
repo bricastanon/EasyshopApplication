@@ -29,30 +29,30 @@ Using Postman
 1. Register:
    - Method: Post
    - URL: `http://localhost:8080/register`
-   - Headers: `Authorization: Bearer <your-token>`
+   - Auth: `Authorization: Bearer <your-token>`
 
 2. Login:
    - Method: Post
    - URL: `http://localhost:8080/login`
-   - Headers: `Authorization: Bearer <your-token>`
+   - Auth: `Authorization: Bearer <your-token>`
   
 3. Get Cart:
    - Method: GET
    - URL: `http://localhost:8080/cart`
-   - Headers: `Authorization: Bearer <your-token>`
+   - Auth: `Authorization: Bearer <your-token>`
 
 4. Add Product to Cart:
    - Method: POST
    - URL: `http://localhost:8080/cart/products/{productId}`
-   - Headers: `Authorization: Bearer <your-token>`
+   - Auth: `Authorization: Bearer <your-token>`
 
 5. Update Product in Cart:
    - Method: PUT
    - URL: `http://localhost:8080/cart/products/{productId}`
-   - Headers: `Authorization: Bearer <your-token>`
+   - Auth: `Authorization: Bearer <your-token>`
  
 6. Clear Cart:
    - Method: DELETE
    - URL: `http://localhost:8080/cart/{Id}`
-   - Headers: `Authorization: Bearer <your-token>`
+   - Auth: `Authorization: Bearer <your-token>`
 
